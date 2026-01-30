@@ -1,5 +1,5 @@
 # SharePoint Online Migration Project Plan
-## Taiyo Document Migration - Hardcopy & File Server to SharePoint Online
+## Document Migration - Hardcopy & File Server to SharePoint Online
 
 **Version:** 1.0
 **Created:** 2026-01-28
@@ -151,7 +151,7 @@ Site: [Department]
 
 | Configuration | Value |
 |--------------|-------|
-| App Name | `Taiyo-SP-Migration` |
+| App Name | `LocalFS-to-SP-Migration` |
 | Authentication | Client ID + Client Secret |
 | Secret Expiry | Set appropriate expiry (recommend: 6 months minimum) |
 
