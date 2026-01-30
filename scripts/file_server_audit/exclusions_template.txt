@@ -1,0 +1,70 @@
+# ================================================================================
+# File Server Audit - Exclusion List Template
+# ================================================================================
+#
+# This file contains folder paths to exclude from the audit scan.
+#
+# Format:
+#   - One path pattern per line
+#   - Lines starting with # are comments (ignored)
+#   - Empty lines are ignored
+#   - Matching is CASE-INSENSITIVE
+#
+# Wildcard Support:
+#   *  = matches any characters (including none)
+#   ?  = matches exactly one character
+#
+# Examples:
+# ================================================================================
+
+# --- Exact Path Exclusions ---
+# Exclude specific folders by full path
+# D:\Data\Archive
+# D:\Data\Temp
+# \\fileserver\share\OldBackups
+
+# --- Wildcard Pattern Exclusions ---
+# Exclude all folders named "temp" under any path
+# *\temp
+# *\tmp
+
+# Exclude all backup folders (ending with _backup)
+# *\*_backup
+# *\*_bak
+
+# Exclude all folders starting with "Archive"
+# D:\Data\Archive*
+
+# Exclude year-based archive folders
+# D:\Data\Archive_20??
+
+# Exclude specific department archives
+# \\fileserver\share\*\Archive
+# \\fileserver\share\*\Old*
+
+# --- Common Exclusions for Migration ---
+# System folders
+# *\$RECYCLE.BIN
+# *\System Volume Information
+
+# Temporary/Cache folders
+# *\temp
+# *\tmp
+# *\cache
+# *\.cache
+
+# Backup folders
+# *\backup
+# *\backups
+# *\*_backup
+# *\*.bak
+
+# Old/Archive data (to be migrated separately or not at all)
+# *\Archive
+# *\Old_Data
+# *\Legacy
+
+# ================================================================================
+# Add your exclusion paths below this line:
+# ================================================================================
+
