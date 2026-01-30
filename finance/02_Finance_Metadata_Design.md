@@ -7,11 +7,21 @@ This document defines the recommended metadata schema for Finance department doc
 
 ## Metadata Design Principles
 
-1. **Consistency** - Use standardized values across all document types
+1. **Simplicity** - Only capture metadata that adds value (avoid over-engineering)
 2. **Searchability** - Enable users to find documents quickly
-3. **Compliance** - Support retention and audit requirements
-4. **Automation** - Enable workflow triggers and automated processing
-5. **Simplicity** - Only capture metadata that adds value (avoid over-engineering)
+3. **Consistency** - Use standardized values across all document types
+4. **Compliance** - Support retention and audit requirements
+
+---
+
+## Metadata Categories
+
+| Category | Description | User Action |
+|----------|-------------|-------------|
+| **Core** | Essential for identification and search | Must enter at upload |
+| **Tracking** | For workflow and status monitoring | Update as status changes |
+| **Reference** | Additional context, nice to have | Optional entry |
+| **Auto** | System-populated or inherited | No user action needed |
 
 ---
 
@@ -19,14 +29,15 @@ This document defines the recommended metadata schema for Finance department doc
 
 These columns apply to ALL finance document libraries:
 
-| Column Name | Type | Required | Values/Format | Purpose |
-|-------------|------|----------|---------------|---------|
-| Document Type | Choice | Yes | [See document types below] | Categorize documents |
-| Fiscal Year | Choice | Yes | 2020, 2021, 2022, 2023, 2024, 2025, 2026 | Financial period |
-| Confidentiality | Choice | Yes | Public, Internal, Confidential, Highly Confidential | Access control |
-| Status | Choice | Yes | Draft, Pending Review, Approved, Final, Archived | Document lifecycle |
-| Department/Cost Center | Choice | No | [Company-specific list] | Cost allocation |
-| Retention Label | Managed Metadata | Auto | [Based on document type] | Compliance |
+| Column Name | Type | Required | Category | Values/Format | Purpose |
+|-------------|------|----------|----------|---------------|---------|
+| Document Type | Choice | Yes | Core | [See document types below] | Categorize documents |
+| Fiscal Year | Choice | Yes | Core | 2020-2026 | Financial period |
+| Document Date | Date | Yes | Core | Date picker | Primary date on document |
+| Status | Choice | Yes | Tracking | Draft, Pending, Approved, Final | Document lifecycle |
+| Confidentiality | Choice | No | Reference | Internal, Confidential, Highly Confidential | Access control |
+| Created By | Person | Auto | Auto | System | Audit trail |
+| Modified Date | Date | Auto | Auto | System | Audit trail |
 
 ---
 
@@ -34,318 +45,272 @@ These columns apply to ALL finance document libraries:
 
 ### 1. Invoices - Accounts Payable (Vendor Invoices)
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Invoice Number | Single line text | Yes | Vendor's invoice number | INV-2024-001234 |
-| Vendor Name | Choice/Lookup | Yes | [Vendor master list] | ABC Supplies Sdn Bhd |
-| Vendor Code | Single line text | No | ERP vendor code | V00123 |
-| Invoice Date | Date | Yes | Date picker | 2024-01-15 |
-| Due Date | Date | Yes | Date picker | 2024-02-15 |
-| Invoice Amount | Currency | Yes | Number with 2 decimals | 5,250.00 |
-| Currency | Choice | Yes | MYR, USD, SGD, EUR, etc. | MYR |
-| Tax Amount | Currency | No | Number with 2 decimals | 420.00 |
-| PO Number | Single line text | No | Linked PO reference | PO-2024-000456 |
-| Payment Status | Choice | Yes | Unpaid, Partially Paid, Paid, On Hold, Disputed | Unpaid |
-| Payment Date | Date | No | Date picker | 2024-02-10 |
-| Payment Reference | Single line text | No | Cheque/Transfer reference | TRF-20240210-001 |
-| Approval Status | Choice | Yes | Pending, Approved, Rejected | Approved |
-| Approved By | Person | No | User picker | |
-| Approved Date | Date | No | Date picker | |
-| GL Account | Single line text | No | General ledger code | 5100-001 |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Invoice Number | Text | Yes | Core | Vendor's invoice number | INV-2024-001234 |
+| Vendor Name | Choice | Yes | Core | [Vendor list] | ABC Supplies Sdn Bhd |
+| Invoice Amount | Currency | Yes | Core | Number with decimals | 5,250.00 |
+| Currency | Choice | Yes | Core | MYR, USD, SGD, EUR | MYR |
+| Due Date | Date | Yes | Core | Date picker | 2024-02-15 |
+| PO Number | Text | No | Reference | Linked PO reference | PO-2024-000456 |
+| Payment Status | Choice | Yes | Tracking | Unpaid, Paid, On Hold | Unpaid |
+| Approval Status | Choice | Yes | Tracking | Pending, Approved, Rejected | Pending |
+
+**Simplified from 15 → 8 fields** (Removed: Vendor Code, Tax Amount, Payment Date, Payment Reference, Approved By, Approved Date, GL Account)
 
 ---
 
 ### 2. Invoices - Accounts Receivable (Customer Invoices)
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Invoice Number | Single line text | Yes | Company invoice number | SI-2024-001234 |
-| Customer Name | Choice/Lookup | Yes | [Customer master list] | XYZ Corporation |
-| Customer Code | Single line text | No | ERP customer code | C00456 |
-| Invoice Date | Date | Yes | Date picker | 2024-01-15 |
-| Due Date | Date | Yes | Date picker | 2024-02-15 |
-| Invoice Amount | Currency | Yes | Number with 2 decimals | 12,500.00 |
-| Currency | Choice | Yes | MYR, USD, SGD, EUR, etc. | MYR |
-| Tax Amount | Currency | No | Number with 2 decimals | 1,000.00 |
-| Collection Status | Choice | Yes | Outstanding, Partial, Collected, Written Off | Outstanding |
-| Aging Category | Choice | No | Current, 30 Days, 60 Days, 90 Days, 90+ Days | Current |
-| Sales Order Reference | Single line text | No | SO reference | SO-2024-000789 |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Invoice Number | Text | Yes | Core | Company invoice number | SI-2024-001234 |
+| Customer Name | Choice | Yes | Core | [Customer list] | XYZ Corporation |
+| Invoice Amount | Currency | Yes | Core | Number with decimals | 12,500.00 |
+| Currency | Choice | Yes | Core | MYR, USD, SGD, EUR | MYR |
+| Due Date | Date | Yes | Core | Date picker | 2024-02-15 |
+| Collection Status | Choice | Yes | Tracking | Outstanding, Partial, Collected, Written Off | Outstanding |
+
+**Simplified from 11 → 6 fields** (Removed: Customer Code, Tax Amount, Aging Category, Sales Order Reference)
 
 ---
 
 ### 3. Purchase Orders
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| PO Number | Single line text | Yes | System PO number | PO-2024-000456 |
-| Vendor Name | Choice/Lookup | Yes | [Vendor master list] | ABC Supplies Sdn Bhd |
-| Vendor Code | Single line text | No | ERP vendor code | V00123 |
-| PO Date | Date | Yes | Date picker | 2024-01-10 |
-| Required Date | Date | No | Delivery required by | 2024-01-25 |
-| Total Amount | Currency | Yes | Number with 2 decimals | 5,000.00 |
-| Currency | Choice | Yes | MYR, USD, SGD, EUR, etc. | MYR |
-| PO Status | Choice | Yes | Draft, Pending Approval, Approved, Sent, Partially Received, Completed, Cancelled | Approved |
-| Requestor | Person | Yes | User picker | |
-| Approver | Person | No | User picker | |
-| Approval Date | Date | No | Date picker | |
-| PR Number | Single line text | No | Purchase Requisition ref | PR-2024-000123 |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| PO Number | Text | Yes | Core | System PO number | PO-2024-000456 |
+| Vendor Name | Choice | Yes | Core | [Vendor list] | ABC Supplies Sdn Bhd |
+| Total Amount | Currency | Yes | Core | Number with decimals | 5,000.00 |
+| Currency | Choice | Yes | Core | MYR, USD, SGD, EUR | MYR |
+| PO Status | Choice | Yes | Tracking | Draft, Approved, Sent, Completed, Cancelled | Approved |
+| Requestor | Person | No | Reference | User picker | |
+
+**Simplified from 12 → 6 fields** (Removed: Vendor Code, PO Date, Required Date, Approver, Approval Date, PR Number)
 
 ---
 
 ### 4. Payment Vouchers
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Voucher Number | Single line text | Yes | Payment voucher number | PV-2024-001234 |
-| Voucher Date | Date | Yes | Date picker | 2024-02-10 |
-| Payee Name | Single line text | Yes | Vendor/Employee name | ABC Supplies Sdn Bhd |
-| Payment Amount | Currency | Yes | Number with 2 decimals | 5,250.00 |
-| Currency | Choice | Yes | MYR, USD, SGD, EUR, etc. | MYR |
-| Payment Method | Choice | Yes | Bank Transfer, Cheque, Cash, Credit Card | Bank Transfer |
-| Bank Account | Choice | No | [Company bank accounts] | Maybank-001 |
-| Cheque Number | Single line text | No | If payment by cheque | CHQ-000456 |
-| Reference Invoices | Multiple lines text | No | Related invoice numbers | INV-001, INV-002 |
-| Payment Purpose | Single line text | No | Description | Supplier payment |
-| Prepared By | Person | Yes | User picker | |
-| Approved By | Person | No | User picker | |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Voucher Number | Text | Yes | Core | Payment voucher number | PV-2024-001234 |
+| Payee Name | Text | Yes | Core | Vendor/Employee name | ABC Supplies Sdn Bhd |
+| Payment Amount | Currency | Yes | Core | Number with decimals | 5,250.00 |
+| Currency | Choice | Yes | Core | MYR, USD, SGD, EUR | MYR |
+| Payment Method | Choice | Yes | Core | Bank Transfer, Cheque, Cash | Bank Transfer |
+| Reference Invoices | Text | No | Reference | Related invoice numbers | INV-001, INV-002 |
+
+**Simplified from 11 → 6 fields** (Removed: Voucher Date, Bank Account, Cheque Number, Payment Purpose, Prepared By, Approved By)
 
 ---
 
 ### 5. Bank Statements & Reconciliations
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Bank Name | Choice | Yes | [Bank list] | Maybank |
-| Account Number | Single line text | Yes | Last 4 digits or masked | ****1234 |
-| Account Name | Single line text | No | Account description | Operating Account |
-| Currency | Choice | Yes | MYR, USD, SGD, EUR, etc. | MYR |
-| Statement Period | Choice | Yes | Month/Year | January 2024 |
-| Statement Date | Date | Yes | Date picker | 2024-01-31 |
-| Reconciliation Status | Choice | Yes | Pending, In Progress, Completed | Completed |
-| Reconciled By | Person | No | User picker | |
-| Reconciled Date | Date | No | Date picker | |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Bank Name | Choice | Yes | Core | [Bank list] | Maybank |
+| Account Number | Text | Yes | Core | Last 4 digits | ****1234 |
+| Currency | Choice | Yes | Core | MYR, USD, SGD, EUR | MYR |
+| Statement Period | Text | Yes | Core | Month/Year | January 2024 |
+| Reconciliation Status | Choice | Yes | Tracking | Pending, In Progress, Completed | Completed |
+
+**Simplified from 9 → 5 fields** (Removed: Account Name, Statement Date, Reconciled By, Reconciled Date)
 
 ---
 
 ### 6. Financial Reports
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Report Type | Choice | Yes | Profit & Loss, Balance Sheet, Cash Flow, Trial Balance, Budget vs Actual, Management Report, Board Report | Profit & Loss |
-| Report Period | Choice | Yes | Monthly, Quarterly, Half-Yearly, Annual | Monthly |
-| Period Month | Choice | No | January - December | January |
-| Period Quarter | Choice | No | Q1, Q2, Q3, Q4 | Q1 |
-| Report Version | Number | No | Version number | 2 |
-| Report Status | Choice | Yes | Draft, Under Review, Final | Final |
-| Prepared By | Person | Yes | User picker | |
-| Reviewed By | Person | No | User picker | |
-| Approved By | Person | No | User picker | |
-| Approval Date | Date | No | Date picker | |
-| Distribution List | Multiple lines text | No | Who receives this report | Board, Management |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Report Type | Choice | Yes | Core | P&L, Balance Sheet, Cash Flow, Management Report, Board Report | Profit & Loss |
+| Report Period | Choice | Yes | Core | Monthly, Quarterly, Annual | Monthly |
+| Report Status | Choice | Yes | Tracking | Draft, Under Review, Final | Final |
+| Version | Number | No | Tracking | Version number | 2 |
+
+**Simplified from 11 → 4 fields** (Removed: Period Month, Period Quarter, Prepared By, Reviewed By, Approved By, Approval Date, Distribution List)
 
 ---
 
 ### 7. Budgets & Forecasts
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Budget Type | Choice | Yes | Annual Budget, Revised Budget, Forecast, Rolling Forecast | Annual Budget |
-| Budget Version | Single line text | Yes | Version identifier | V1.0, V2.0 |
-| Period Covered | Single line text | Yes | Budget period | FY2024 |
-| Total Budget Amount | Currency | No | Number with 2 decimals | 5,000,000.00 |
-| Budget Status | Choice | Yes | Draft, Under Review, Approved, Superseded | Approved |
-| Prepared By | Person | Yes | User picker | |
-| Approved By | Person | No | User picker | |
-| Approval Date | Date | No | Date picker | |
-| Effective Date | Date | No | When budget takes effect | 2024-01-01 |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Budget Type | Choice | Yes | Core | Annual Budget, Revised Budget, Forecast | Annual Budget |
+| Period Covered | Text | Yes | Core | Budget period | FY2024 |
+| Budget Status | Choice | Yes | Tracking | Draft, Under Review, Approved | Approved |
+| Version | Text | No | Tracking | Version identifier | V1.0 |
+
+**Simplified from 9 → 4 fields** (Removed: Total Budget Amount, Prepared By, Approved By, Approval Date, Effective Date)
 
 ---
 
 ### 8. Tax Documents
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Tax Type | Choice | Yes | GST/SST, Corporate Tax, Withholding Tax, Stamp Duty, Property Tax, Payroll Tax | GST/SST |
-| Tax Period | Single line text | Yes | Tax period covered | Jan-Mar 2024 |
-| Tax Year | Choice | Yes | Tax year | 2024 |
-| Filing Type | Choice | Yes | Return, Payment, Refund Claim, Assessment, Appeal | Return |
-| Filing Status | Choice | Yes | Pending, Filed, Acknowledged, Assessed | Filed |
-| Filing Date | Date | No | Date submitted | 2024-04-15 |
-| Due Date | Date | Yes | Statutory due date | 2024-04-30 |
-| Tax Amount | Currency | No | Amount payable/refundable | 25,000.00 |
-| Reference Number | Single line text | No | Tax authority reference | GST-2024-Q1-001 |
-| Prepared By | Person | Yes | User picker | |
-| Filed By | Person | No | User picker | |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Tax Type | Choice | Yes | Core | GST/SST, Corporate Tax, Withholding Tax | GST/SST |
+| Tax Year | Choice | Yes | Core | Year | 2024 |
+| Tax Period | Text | Yes | Core | Period covered | Q1 2024 |
+| Filing Type | Choice | Yes | Core | Return, Payment, Assessment | Return |
+| Filing Status | Choice | Yes | Tracking | Pending, Filed, Assessed | Filed |
+| Due Date | Date | No | Reference | Statutory due date | 2024-04-30 |
+
+**Simplified from 11 → 6 fields** (Removed: Filing Date, Tax Amount, Reference Number, Prepared By, Filed By)
 
 ---
 
 ### 9. Audit Files
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Audit Type | Choice | Yes | Internal Audit, External Audit, Tax Audit, Special Audit | External Audit |
-| Audit Year | Choice | Yes | Year | 2024 |
-| Audit Period | Single line text | No | Period covered | FY2023 |
-| Auditor Name | Single line text | No | Audit firm/person | Ernst & Young |
-| Document Category | Choice | Yes | Engagement Letter, Working Papers, Audit Report, Management Letter, Response | Working Papers |
-| Audit Status | Choice | Yes | Planning, Fieldwork, Review, Completed | Completed |
-| Issue Date | Date | No | Report issue date | 2024-03-15 |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Audit Type | Choice | Yes | Core | Internal Audit, External Audit, Tax Audit | External Audit |
+| Audit Year | Choice | Yes | Core | Year | 2024 |
+| Document Category | Choice | Yes | Core | Working Papers, Audit Report, Management Letter | Working Papers |
+| Audit Status | Choice | Yes | Tracking | Planning, Fieldwork, Completed | Completed |
+
+**Simplified from 7 → 4 fields** (Removed: Audit Period, Auditor Name, Issue Date)
 
 ---
 
 ### 10. Contracts & Agreements
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Contract Number | Single line text | Yes | Unique identifier | CNT-2024-001 |
-| Contract Title | Single line text | Yes | Description | Office Lease Agreement |
-| Contract Type | Choice | Yes | Vendor Agreement, Lease, Loan, Service Agreement, NDA, Employment, License | Lease |
-| Counterparty | Single line text | Yes | Other party name | ABC Properties Sdn Bhd |
-| Contract Value | Currency | No | Total contract value | 120,000.00 |
-| Currency | Choice | No | MYR, USD, SGD, EUR | MYR |
-| Start Date | Date | Yes | Contract effective date | 2024-01-01 |
-| End Date | Date | Yes | Contract expiry date | 2026-12-31 |
-| Renewal Date | Date | No | When to review/renew | 2026-10-01 |
-| Auto Renewal | Yes/No | No | Does contract auto-renew? | Yes |
-| Notice Period | Single line text | No | Notice required | 3 months |
-| Contract Status | Choice | Yes | Draft, Active, Expired, Terminated, Renewed | Active |
-| Signed Date | Date | No | Date executed | 2023-12-15 |
-| Signed Copy | Yes/No | Yes | Is this the signed version? | Yes |
-| Owner | Person | Yes | Contract owner | |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Contract Number | Text | Yes | Core | Unique identifier | CNT-2024-001 |
+| Contract Title | Text | Yes | Core | Description | Office Lease Agreement |
+| Contract Type | Choice | Yes | Core | Vendor, Lease, Service, NDA, License | Lease |
+| Counterparty | Text | Yes | Core | Other party name | ABC Properties Sdn Bhd |
+| Start Date | Date | Yes | Core | Contract start | 2024-01-01 |
+| End Date | Date | Yes | Core | Contract expiry | 2026-12-31 |
+| Contract Value | Currency | No | Reference | Total value | 120,000.00 |
+| Currency | Choice | No | Reference | MYR, USD, SGD, EUR | MYR |
+| Contract Status | Choice | Yes | Tracking | Draft, Active, Expired, Terminated | Active |
+
+**Simplified from 15 → 9 fields** (Removed: Renewal Date, Auto Renewal, Notice Period, Signed Date, Signed Copy, Owner)
 
 ---
 
-### 11. Expense Claims / Reports
+### 11. Expense Claims
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Claim Number | Single line text | Yes | Expense claim reference | EXP-2024-001234 |
-| Employee Name | Person | Yes | User picker | |
-| Employee ID | Single line text | No | Staff ID | EMP001 |
-| Claim Date | Date | Yes | Submission date | 2024-01-20 |
-| Expense Period | Single line text | No | Period covered | Jan 2024 |
-| Total Amount | Currency | Yes | Total claim amount | 1,250.00 |
-| Currency | Choice | Yes | MYR, USD, SGD, EUR | MYR |
-| Expense Category | Choice | Yes | Travel, Accommodation, Meals, Transport, Office Supplies, Entertainment, Training, Other | Travel |
-| Purpose | Single line text | Yes | Business purpose | Client meeting - Penang |
-| Approval Status | Choice | Yes | Pending, Approved, Rejected, Paid | Approved |
-| Approved By | Person | No | User picker | |
-| Approved Date | Date | No | Date picker | |
-| Payment Status | Choice | Yes | Pending, Processed, Paid | Paid |
-| Payment Date | Date | No | Date picker | |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Claim Number | Text | Yes | Core | Expense claim reference | EXP-2024-001234 |
+| Employee Name | Person | Yes | Core | User picker | |
+| Total Amount | Currency | Yes | Core | Total claim amount | 1,250.00 |
+| Currency | Choice | Yes | Core | MYR, USD, SGD, EUR | MYR |
+| Expense Category | Choice | Yes | Core | Travel, Meals, Transport, Training, Other | Travel |
+| Purpose | Text | Yes | Core | Business purpose | Client meeting |
+| Approval Status | Choice | Yes | Tracking | Pending, Approved, Rejected, Paid | Approved |
+
+**Simplified from 14 → 7 fields** (Removed: Employee ID, Claim Date, Expense Period, Approved By, Approved Date, Payment Status, Payment Date)
 
 ---
 
-### 12. Journal Entries / Vouchers
+### 12. Journal Entries
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Journal Number | Single line text | Yes | JV reference | JV-2024-001234 |
-| Journal Date | Date | Yes | Transaction date | 2024-01-31 |
-| Journal Type | Choice | Yes | Standard, Adjusting, Closing, Reversing, Recurring | Adjusting |
-| Description | Single line text | Yes | Journal description | Month-end accruals |
-| Total Debit | Currency | No | Total debit amount | 10,000.00 |
-| Total Credit | Currency | No | Total credit amount | 10,000.00 |
-| Posting Status | Choice | Yes | Draft, Posted, Reversed | Posted |
-| Prepared By | Person | Yes | User picker | |
-| Approved By | Person | No | User picker | |
-| Posted By | Person | No | User picker | |
-| Posted Date | Date | No | Date picker | |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Journal Number | Text | Yes | Core | JV reference | JV-2024-001234 |
+| Journal Type | Choice | Yes | Core | Standard, Adjusting, Closing, Reversing | Adjusting |
+| Description | Text | Yes | Core | Journal description | Month-end accruals |
+| Posting Status | Choice | Yes | Tracking | Draft, Posted, Reversed | Posted |
+
+**Simplified from 11 → 4 fields** (Removed: Journal Date, Total Debit, Total Credit, Prepared By, Approved By, Posted By, Posted Date)
 
 ---
 
 ### 13. Policies & Procedures
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Policy Number | Single line text | Yes | Policy identifier | FIN-POL-001 |
-| Policy Title | Single line text | Yes | Policy name | Travel & Expense Policy |
-| Policy Category | Choice | Yes | Travel, Expense, Procurement, Cash Management, Accounting, Tax, Compliance, General | Travel |
-| Version | Single line text | Yes | Version number | 3.0 |
-| Effective Date | Date | Yes | When policy takes effect | 2024-01-01 |
-| Review Date | Date | No | Next review date | 2025-01-01 |
-| Policy Status | Choice | Yes | Draft, Active, Under Review, Superseded, Retired | Active |
-| Approved By | Person | No | User picker | |
-| Approval Date | Date | No | Date picker | |
-| Supersedes | Single line text | No | Previous version | FIN-POL-001 V2.0 |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Policy Number | Text | Yes | Core | Policy identifier | FIN-POL-001 |
+| Policy Title | Text | Yes | Core | Policy name | Travel & Expense Policy |
+| Policy Category | Choice | Yes | Core | Travel, Expense, Procurement, Accounting | Travel |
+| Version | Text | Yes | Core | Version number | 3.0 |
+| Effective Date | Date | Yes | Core | When policy takes effect | 2024-01-01 |
+| Policy Status | Choice | Yes | Tracking | Draft, Active, Superseded, Retired | Active |
+
+**Simplified from 10 → 6 fields** (Removed: Review Date, Approved By, Approval Date, Supersedes)
 
 ---
 
 ### 14. Fixed Assets
 
-| Column Name | Type | Required | Values/Format | Example |
-|-------------|------|----------|---------------|---------|
-| Asset Number | Single line text | Yes | Fixed asset code | FA-2024-001 |
-| Asset Description | Single line text | Yes | Asset name | Dell Laptop Latitude 5520 |
-| Asset Category | Choice | Yes | Computer Equipment, Office Equipment, Furniture, Vehicles, Machinery, Building, Land, Leasehold | Computer Equipment |
-| Serial Number | Single line text | No | Manufacturer serial | SN123456789 |
-| Location | Choice | No | Asset location | HQ - Level 5 |
-| Acquisition Date | Date | Yes | Purchase date | 2024-01-15 |
-| Acquisition Cost | Currency | Yes | Original cost | 5,500.00 |
-| Useful Life | Number | No | Years | 5 |
-| Depreciation Method | Choice | No | Straight Line, Declining Balance | Straight Line |
-| Asset Status | Choice | Yes | Active, Disposed, Written Off, Under Repair | Active |
-| Disposal Date | Date | No | Date picker | |
-| Disposal Value | Currency | No | Proceeds from disposal | |
-| Assigned To | Person | No | User picker | |
+| Column Name | Type | Required | Category | Values/Format | Example |
+|-------------|------|----------|----------|---------------|---------|
+| Asset Number | Text | Yes | Core | Fixed asset code | FA-2024-001 |
+| Asset Description | Text | Yes | Core | Asset name | Dell Laptop Latitude 5520 |
+| Asset Category | Choice | Yes | Core | Computer, Office Equipment, Furniture, Vehicle | Computer |
+| Acquisition Date | Date | Yes | Core | Purchase date | 2024-01-15 |
+| Acquisition Cost | Currency | Yes | Core | Original cost | 5,500.00 |
+| Asset Status | Choice | Yes | Tracking | Active, Disposed, Written Off | Active |
+| Location | Choice | No | Reference | Asset location | HQ - Level 5 |
+
+**Simplified from 12 → 7 fields** (Removed: Serial Number, Useful Life, Depreciation Method, Disposal Date, Disposal Value, Assigned To)
 
 ---
 
-## Metadata Implementation Checklist
+## Summary: Field Count Comparison
 
-| Task | Status |
-|------|--------|
-| Create Site Columns for global metadata | ☐ |
-| Create Content Types for each document type | ☐ |
-| Configure Choice columns with values | ☐ |
-| Set up Lookup columns (Vendor, Customer lists) | ☐ |
-| Configure default values where applicable | ☐ |
-| Set required fields validation | ☐ |
-| Apply Content Types to libraries | ☐ |
-| Configure column ordering in forms | ☐ |
-| Test metadata entry workflow | ☐ |
-| Train users on metadata entry | ☐ |
+| Document Type | Original | Simplified | Reduction |
+|---------------|----------|------------|-----------|
+| Vendor Invoices (AP) | 15 | 8 | -47% |
+| Customer Invoices (AR) | 11 | 6 | -45% |
+| Purchase Orders | 12 | 6 | -50% |
+| Payment Vouchers | 11 | 6 | -45% |
+| Bank Statements | 9 | 5 | -44% |
+| Financial Reports | 11 | 4 | -64% |
+| Budgets & Forecasts | 9 | 4 | -56% |
+| Tax Documents | 11 | 6 | -45% |
+| Audit Files | 7 | 4 | -43% |
+| Contracts | 15 | 9 | -40% |
+| Expense Claims | 14 | 7 | -50% |
+| Journal Entries | 11 | 4 | -64% |
+| Policies | 10 | 6 | -40% |
+| Fixed Assets | 12 | 7 | -42% |
+| **TOTAL** | **158** | **82** | **-48%** |
 
 ---
 
-## Managed Metadata (Term Store) - Recommended Terms
+## Category Distribution
 
-Consider creating these term sets in the SharePoint Term Store for consistent values:
+| Category | Count | % of Total | User Effort |
+|----------|-------|------------|-------------|
+| Core | 58 | 71% | Enter at upload |
+| Tracking | 18 | 22% | Update when status changes |
+| Reference | 6 | 7% | Optional |
+| Auto | - | - | System handles |
 
-### Finance Terms
+---
+
+## Implementation Notes
+
+1. **Start Simple**: Begin with Core fields only; add Reference fields later if needed
+2. **Default Values**: Set Fiscal Year to current year, Status to "Draft"
+3. **Choice Lists**: Keep options to 5-7 items where possible
+4. **Views**: Create views filtered by Status for workflow tracking
+5. **Training**: Focus training on Core fields only
+
+---
+
+## Managed Metadata (Term Store)
+
+Consider Term Store for frequently used lists:
+
 ```
 Finance
-├── Document Types
-│   ├── Invoice - AP
-│   ├── Invoice - AR
-│   ├── Purchase Order
-│   ├── Payment Voucher
-│   ├── Bank Statement
-│   ├── Financial Report
-│   ├── Budget
-│   ├── Tax Document
-│   ├── Audit File
-│   ├── Contract
-│   ├── Expense Claim
-│   ├── Journal Entry
-│   ├── Policy
-│   └── Fixed Asset
-├── Vendors
-│   └── [Vendor list]
-├── Customers
-│   └── [Customer list]
-├── Cost Centers
-│   └── [Cost center list]
-└── GL Accounts
-    └── [Chart of accounts]
+├── Document Types (14 types)
+├── Vendors (managed list)
+├── Customers (managed list)
+├── Banks (managed list)
+└── Cost Centers (optional)
 ```
 
 ---
 
 ## Notes
 
-1. **Required vs Optional**: Mark fields as required only if absolutely necessary to avoid user frustration
-2. **Default Values**: Set sensible defaults (e.g., Fiscal Year = current year) to speed up data entry
-3. **Validation**: Use column validation for formats (e.g., Invoice Number format)
-4. **Views**: Create filtered views based on key metadata (e.g., Unpaid Invoices, Pending Approvals)
-5. **Search**: Ensure key metadata columns are included in search schema
+- Fields removed are typically: workflow participants (Prepared By, Approved By), detailed dates, codes that duplicate names, and calculated/derived values
+- If detailed tracking is required, fields can be added back for specific document types
+- Consider using Power Automate to auto-populate some removed fields if needed later
