@@ -99,9 +99,10 @@ These columns apply to ALL finance document libraries:
 | Payment Amount | Currency | Yes | Core | Number with decimals | 5,250.00 |
 | Currency | Choice | Yes | Core | MYR, USD, SGD, EUR | MYR |
 | Payment Method | Choice | Yes | Core | Bank Transfer, Cheque, Cash | Bank Transfer |
+| Bank Name | Choice | Yes | Core | [Bank list] | Maybank |
 | Reference Invoices | Text | No | Reference | Related invoice numbers | INV-001, INV-002 |
 
-**Simplified from 11 → 6 fields** (Removed: Voucher Date, Bank Account, Cheque Number, Payment Purpose, Prepared By, Approved By)
+**Simplified from 11 → 7 fields** (Removed: Voucher Date, Cheque Number, Payment Purpose, Prepared By, Approved By)
 
 ---
 
@@ -258,7 +259,7 @@ These columns apply to ALL finance document libraries:
 | Vendor Invoices (AP) | 15 | 8 | -47% |
 | Customer Invoices (AR) | 11 | 6 | -45% |
 | Purchase Orders | 12 | 6 | -50% |
-| Payment Vouchers | 11 | 6 | -45% |
+| Payment Vouchers | 11 | 7 | -36% |
 | Bank Statements | 9 | 5 | -44% |
 | Financial Reports | 11 | 4 | -64% |
 | Budgets & Forecasts | 9 | 4 | -56% |
@@ -269,7 +270,7 @@ These columns apply to ALL finance document libraries:
 | Journal Entries | 11 | 4 | -64% |
 | Policies | 10 | 6 | -40% |
 | Fixed Assets | 12 | 7 | -42% |
-| **TOTAL** | **158** | **82** | **-48%** |
+| **TOTAL** | **158** | **83** | **-47%** |
 
 ---
 
@@ -277,7 +278,7 @@ These columns apply to ALL finance document libraries:
 
 | Category | Count | % of Total | User Effort |
 |----------|-------|------------|-------------|
-| Core | 58 | 71% | Enter at upload |
+| Core | 59 | 71% | Enter at upload |
 | Tracking | 18 | 22% | Update when status changes |
 | Reference | 6 | 7% | Optional |
 | Auto | - | - | System handles |
