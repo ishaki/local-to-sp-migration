@@ -118,10 +118,9 @@ These columns apply to ALL finance document libraries:
 | Bank Name | Choice | Yes | [Bank list] | Maybank |
 | Account Number | Single line text | Yes | Last 4 digits or masked | ****1234 |
 | Account Name | Single line text | No | Account description | Operating Account |
+| Currency | Choice | Yes | MYR, USD, SGD, EUR, etc. | MYR |
 | Statement Period | Choice | Yes | Month/Year | January 2024 |
 | Statement Date | Date | Yes | Date picker | 2024-01-31 |
-| Opening Balance | Currency | No | Number with 2 decimals | 100,000.00 |
-| Closing Balance | Currency | No | Number with 2 decimals | 125,000.00 |
 | Reconciliation Status | Choice | Yes | Pending, In Progress, Completed | Completed |
 | Reconciled By | Person | No | User picker | |
 | Reconciled Date | Date | No | Date picker | |
