@@ -19,6 +19,11 @@ pip-delete-this-directory.txt
 
 # Output folders
 scripts/file_server_audit/output/
+scripts/sharepoint_upload/output/
+
+# Config files with secrets
+config.json
+scripts/*/config.json
 
 # IDE
 .idea/

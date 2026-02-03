@@ -1,0 +1,5 @@
+{
+    "site_url": "https://yourtenant.sharepoint.com/sites/yoursite",
+    "client_id": "your-azure-app-client-id",
+    "client_secret": "your-azure-app-client-secret"
+}
